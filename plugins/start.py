@@ -34,14 +34,18 @@ async def _human_time_duration(seconds):
     for unit, div in TIME_DURATION_UNITS:
         amount, seconds = divmod(int(seconds), div)
         if amount > 0:
-            parts.append("{} {}{}".format(amount, unit, "" if amount == 1 else "s"))
+            parts.append(f'{amount} {unit}{"" if amount == 1 else "s"}')
     return ", ".join(parts)
 
 
 @Bot.on_message(filters.command("start") & filters.private & subsall & subsch & subsgc)
 async def start_command(client: Bot, message: Message):
     id = message.from_user.id
-    user_name = "@" + message.from_user.username if message.from_user.username else None
+    user_name = (
+        f"@{message.from_user.username}"
+        if message.from_user.username
+        else None
+    )
     try:
         await add_user(id, user_name)
     except:
@@ -120,7 +124,7 @@ async def start_command(client: Bot, message: Message):
                 last=message.from_user.last_name,
                 username=None
                 if not message.from_user.username
-                else "@" + message.from_user.username,
+                else f"@{message.from_user.username}",
                 mention=message.from_user.mention,
                 id=message.from_user.id,
             ),
@@ -141,7 +145,7 @@ async def not_joined(client: Bot, message: Message):
             last=message.from_user.last_name,
             username=None
             if not message.from_user.username
-            else "@" + message.from_user.username,
+            else f"@{message.from_user.username}",
             mention=message.from_user.mention,
             id=message.from_user.id,
         ),
